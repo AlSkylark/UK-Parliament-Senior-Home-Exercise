@@ -4,20 +4,6 @@ using UKParliament.CodeTest.Data;
 using UKParliament.CodeTest.Data.Repositories;
 using UKParliament.CodeTest.Data.Repositories.Interfaces;
 using UKParliament.CodeTest.Services;
-using UKParliament.CodeTest.Web.Controllers.Api;
-
-app.MapEmployeeEndpoints();
-
-builder.Services.AddEndpointsApiExplorer();
-
-builder.Services.AddSwaggerGen();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-;
 
 namespace UKParliament.CodeTest.Web;
 

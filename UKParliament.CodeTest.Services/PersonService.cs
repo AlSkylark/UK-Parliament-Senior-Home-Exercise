@@ -1,8 +1,10 @@
 ﻿using UKParliament.CodeTest.Data.Models;
+using UKParliament.CodeTest.Data.Repositories.Interfaces;
+using UKParliament.CodeTest.Data.Requests;
 
 namespace UKParliament.CodeTest.Services;
 
-public class PersonService : IPersonService
+public class PersonService(IPersonRepository<Person> personRepository) : IPersonService
 {
     public Person Create()
     {
@@ -14,9 +16,10 @@ public class PersonService : IPersonService
         throw new NotImplementedException();
     }
 
-    public IEnumerable<Person> Search(string searchText)
+    public IEnumerable<Person> Search(SearchRequest? request)
     {
-        throw new NotImplementedException();
+        var data = personRepository.Search(request);
+        return data;
     }
 
     public Person Update()

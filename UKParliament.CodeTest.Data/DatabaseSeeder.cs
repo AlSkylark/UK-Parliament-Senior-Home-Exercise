@@ -73,7 +73,8 @@ public static class DatabaseSeeder
     )
     {
         return new Faker<Manager>()
-            .ApplyPersonRules(context)
+            .ApplyPersonRules()
+            .ApplyEmployeeRules(context)
             .RuleFor(p => p.Employees, (f, r) => CreateFakeEmployee(employees, r, context))
             .Generate(amount);
     }
@@ -85,13 +86,14 @@ public static class DatabaseSeeder
     )
     {
         return new Faker<Employee>()
-            .ApplyPersonRules(context)
+            .ApplyPersonRules()
+            .ApplyEmployeeRules(context)
             .RuleFor(p => p.Manager, manager)
             .Generate(amount);
     }
 
-    public static Faker<T> ApplyPersonRules<T>(this Faker<T> faker, PersonManagerContext context)
-        where T : Person
+    public static Faker<T> ApplyEmployeeRules<T>(this Faker<T> faker, PersonManagerContext context)
+        where T : Employee
     {
         return faker
             .RuleFor(p => p.PayBand, f => context.PayBands.ToList().ElementAt(f.Random.Number(5)))
@@ -99,16 +101,22 @@ public static class DatabaseSeeder
                 p => p.Department,
                 f => context.Departments.ToList().ElementAt(f.Random.Number(3))
             )
-            .RuleFor(p => p.Address, f => CreateFakeAddress())
             .RuleFor(p => p.BankAccount, f => f.Finance.Iban())
             .RuleFor(p => p.DateJoined, f => f.Date.PastDateOnly(f.Random.Number(50)))
-            .RuleFor(p => p.DoB, f => f.Date.PastDateOnly(f.Random.Number(30, 70)))
-            .RuleFor(p => p.FirstName, f => f.Name.FirstName())
-            .RuleFor(p => p.LastName, f => f.Name.LastName())
             .RuleFor(
                 p => p.Salary,
                 (f, r) => f.Finance.Amount(r.PayBand!.MinPay, r.PayBand!.MaxPay)
             );
+    }
+
+    public static Faker<T> ApplyPersonRules<T>(this Faker<T> faker)
+        where T : Person
+    {
+        return faker
+            .RuleFor(p => p.Address, f => CreateFakeAddress())
+            .RuleFor(p => p.DoB, f => f.Date.PastDateOnly(f.Random.Number(30, 70)))
+            .RuleFor(p => p.FirstName, f => f.Name.FirstName())
+            .RuleFor(p => p.LastName, f => f.Name.LastName());
     }
 
     public static Address CreateFakeAddress()

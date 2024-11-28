@@ -23,7 +23,7 @@ public class PersonRepositoryIntegrationTests
     [Fact]
     public async Task View_ReturnsById_Person()
     {
-        var eg = _base.Scope.ServiceProvider.GetService<IPersonRepository>();
+        var eg = _base.Scope.ServiceProvider.GetService<IPersonRepository<Person>>();
         var person = new Person
         {
             FirstName = "Test",

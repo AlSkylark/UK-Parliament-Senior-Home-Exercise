@@ -8,13 +8,20 @@ public class PersonManagerContext(DbContextOptions<PersonManagerContext> options
 {
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder);
+        modelBuilder
+            .Entity<Person>()
+            .HasDiscriminator<PersonTypeEnum>("PersonType")
+            .HasValue<Person>(PersonTypeEnum.Guest)
+            .HasValue<Employee>(PersonTypeEnum.Employee)
+            .HasValue<Manager>(PersonTypeEnum.Manager);
 
         modelBuilder
             .Entity<Employee>()
             .HasOne(e => e.Manager)
             .WithMany(m => m.Employees)
             .HasForeignKey(e => e.ManagerId);
+
+        base.OnModelCreating(modelBuilder);
     }
 
     public DbSet<Person> People { get; set; } = null!;

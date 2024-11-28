@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { PersonService } from '../../services/person.service';
+import { PersonViewModel } from 'src/app/models/person-view-model';
 
 @Component({
   selector: 'app-home',
@@ -7,8 +8,18 @@ import { PersonService } from '../../services/person.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent {
+  test: string = "";
+
+  people: PersonViewModel[] = [];
+
   constructor(private personService: PersonService) {
     this.getPersonById(1);
+  }
+
+  search() {
+    this.personService.search().subscribe((e) => {
+      this.people = e;
+    })
   }
 
   getPersonById(id: number): void {

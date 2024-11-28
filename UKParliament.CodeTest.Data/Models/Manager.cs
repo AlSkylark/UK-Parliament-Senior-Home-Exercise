@@ -1,6 +1,6 @@
 ﻿namespace UKParliament.CodeTest.Data.Models;
 
-public class Manager : Person
+public class Manager : Employee
 {
-    public IEnumerable<Employee> Employees { get; set; } = [];
+    public IList<Employee> Employees { get; set; } = [];
 }

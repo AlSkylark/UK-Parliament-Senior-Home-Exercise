@@ -25,7 +25,7 @@ public class Program
                     .AddInterceptors(services.GetRequiredService<CreatedUpdatedInterceptor>())
         );
 
-        builder.Services.AddScoped<IPersonRepository, PersonRepository>();
+        builder.Services.AddScoped(typeof(IPersonRepository<>), typeof(PersonRepository<>));
         builder.Services.AddScoped<IPersonService, PersonService>();
 
         var app = builder.Build();

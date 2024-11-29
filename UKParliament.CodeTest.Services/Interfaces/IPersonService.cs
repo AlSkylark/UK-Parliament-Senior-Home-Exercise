@@ -1,7 +1,7 @@
 ﻿using UKParliament.CodeTest.Data.Models;
 using UKParliament.CodeTest.Data.Requests;
 
-namespace UKParliament.CodeTest.Services;
+namespace UKParliament.CodeTest.Services.Interfaces;
 
 public interface IPersonService
 {

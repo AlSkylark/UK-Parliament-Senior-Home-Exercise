@@ -1,9 +1,9 @@
+using System.Reflection;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using CommissionMe.API.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using UKParliament.CodeTest.Data;
-using UKParliament.CodeTest.Data.Repositories;
-using UKParliament.CodeTest.Data.Repositories.Interfaces;
-using UKParliament.CodeTest.Services;
 
 namespace UKParliament.CodeTest.Web;
 
@@ -12,6 +12,7 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 
         // Add services to the container.
 
@@ -25,8 +26,25 @@ public class Program
                     .AddInterceptors(services.GetRequiredService<CreatedUpdatedInterceptor>())
         );
 
-        builder.Services.AddScoped(typeof(IPersonRepository<>), typeof(PersonRepository<>));
-        builder.Services.AddScoped<IPersonService, PersonService>();
+        //builder.Services.AddScoped<IPersonRepository<Person, SearchRequest>, PersonRepository>();
+        //builder.Services.AddScoped<IPersonService, PersonService>();
+
+        builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
+        {
+            var execAssembly = typeof(Program).Assembly;
+            var assemblies = execAssembly
+                .GetReferencedAssemblies()
+                .Where(a => a.Name?.StartsWith("UKParliament.CodeTest") ?? false)
+                .Select(Assembly.Load)
+                .ToList();
+
+            assemblies.Add(execAssembly);
+
+            containerBuilder
+                .RegisterAssemblyTypes([.. assemblies])
+                .Where(t => t.GetConstructors().Any(c => c.IsPublic))
+                .AsImplementedInterfaces();
+        });
 
         var app = builder.Build();
 

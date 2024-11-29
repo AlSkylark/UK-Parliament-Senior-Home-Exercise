@@ -11,6 +11,9 @@
 <button type="button" (click)="search()">Do it</button>
 
 @for(person of people; track $index){
-<div>{{ $index }} {{ person.firstName }} {{ person.lastName }}</div>
+<div>
+    {{ $index }} {{ person.firstName }} {{ person.lastName }} -
+    {{ person.personType }}
+</div>
 <hr />
 }

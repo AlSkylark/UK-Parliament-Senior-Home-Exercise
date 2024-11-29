@@ -5,8 +5,10 @@ using UKParliament.CodeTest.Data.Requests;
 
 namespace UKParliament.CodeTest.Data.Repositories;
 
-public class BasePersonRepository<T>(PersonManagerContext db) : IPersonRepository<T>
+public class BasePersonRepository<T, TSearch>(PersonManagerContext db)
+    : IPersonRepository<T, TSearch>
     where T : Person
+    where TSearch : SearchRequest
 {
     public async Task<T?> Create(T person)
     {
@@ -25,20 +27,21 @@ public class BasePersonRepository<T>(PersonManagerContext db) : IPersonRepositor
         await db.SaveChangesAsync();
     }
 
-    protected virtual IQueryable<T> CreateSearchQuery(SearchRequest? request)
+    protected virtual IQueryable<T> CreateSearchQuery(TSearch? request)
     {
-        var query = db.Set<T>().AsQueryable();
+        var query = db.Set<T>().Include(p => p.Address).AsQueryable();
         if (request is not null && !string.IsNullOrWhiteSpace(request.TextSearch))
         {
-            query
-                .Where(p => EF.Functions.Like(p.FirstName, request.TextSearch))
-                .Where(p => EF.Functions.Like(p.LastName, request.TextSearch));
+            query = query.Where(p =>
+                EF.Functions.Like(p.FirstName, $"%{request.TextSearch}%")
+                || EF.Functions.Like(p.LastName, $"%{request.TextSearch}%")
+            );
         }
 
         return query;
     }
 
-    public IList<T> Search(SearchRequest? request)
+    public IList<T> Search(TSearch? request)
     {
         var query = CreateSearchQuery(request);
 

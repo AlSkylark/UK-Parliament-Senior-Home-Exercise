@@ -5,10 +5,10 @@ using UKParliament.CodeTest.Services.Interfaces;
 
 namespace UKParliament.CodeTest.Services;
 
-public class PersonService(IPersonRepository<Person, SearchRequest> personRepository)
-    : IPersonService
+public class EmployeeService(IPersonRepository<Employee, EmployeeSearchRequest> employeeRepository)
+    : IEmployeeService
 {
-    public Person Create()
+    public Employee Create()
     {
         throw new NotImplementedException();
     }
@@ -18,18 +18,18 @@ public class PersonService(IPersonRepository<Person, SearchRequest> personReposi
         throw new NotImplementedException();
     }
 
-    public IEnumerable<Person> Search(SearchRequest? request)
+    public IEnumerable<Employee> Search(EmployeeSearchRequest? request)
     {
-        var data = personRepository.Search(request);
+        var data = employeeRepository.Search(request);
         return data;
     }
 
-    public Person Update()
+    public Employee Update()
     {
         throw new NotImplementedException();
     }
 
-    public Person View(int id)
+    public Employee View(int id)
     {
         throw new NotImplementedException();
     }

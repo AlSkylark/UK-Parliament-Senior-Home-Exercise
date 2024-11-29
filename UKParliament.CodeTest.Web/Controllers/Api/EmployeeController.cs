@@ -1,20 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using UKParliament.CodeTest.Data.Models;
 using UKParliament.CodeTest.Data.Requests;
-using UKParliament.CodeTest.Services;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+using UKParliament.CodeTest.Services.Interfaces;
 
 namespace UKParliament.CodeTest.Web.Controllers.Api;
 
 [Route("api/[controller]")]
 [ApiController]
-public class EmployeeController(IPersonService personService) : ControllerBase
+public class EmployeeController(IEmployeeService employeeService) : ControllerBase
 {
     [HttpGet]
-    public ActionResult<IEnumerable<Employee>> Search([FromQuery] SearchRequest? request)
+    public ActionResult<IEnumerable<Object>> Search([FromQuery] EmployeeSearchRequest? request)
     {
-        return Ok(personService.Search(request));
+        var results = employeeService.Search(request);
+        return Ok(
+            results.Select(e => new
+            {
+                e.LastName,
+                e.FirstName,
+                e.PayBand,
+            })
+        );
     }
 
     [HttpGet("{id}")]

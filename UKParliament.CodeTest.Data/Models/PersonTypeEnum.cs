@@ -1,8 +1,15 @@
-﻿namespace UKParliament.CodeTest.Data.Models;
+﻿using System.ComponentModel;
 
-public enum PersonTypeEnum
+namespace UKParliament.CodeTest.Data.Models;
+
+public enum EmployeeTypeEnum
 {
+    [Description("Guest")]
     Guest,
+
+    [Description("Employee")]
     Employee,
+
+    [Description("Manager")]
     Manager,
 }

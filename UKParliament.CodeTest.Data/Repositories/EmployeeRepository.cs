@@ -4,10 +4,9 @@ using UKParliament.CodeTest.Data.Requests;
 
 namespace UKParliament.CodeTest.Data.Repositories;
 
-public class EmeployeeRepository(PersonManagerContext db)
-    : BasePersonRepository<Employee, EmployeeSearchRequest>(db)
+public class EmployeeRepository(PersonManagerContext db) : BasePersonRepository<Employee>(db)
 {
-    protected override IQueryable<Employee> CreateSearchQuery(EmployeeSearchRequest? request)
+    protected override IQueryable<Employee> CreateSearchQuery(SearchRequest? request)
     {
         var query = base.CreateSearchQuery(request);
 

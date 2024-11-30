@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using UKParliament.CodeTest.Data;
 using UKParliament.CodeTest.Data.Models;
 using UKParliament.CodeTest.Data.Repositories.Interfaces;
-using UKParliament.CodeTest.Data.Requests;
 using Xunit;
 
 namespace UKParliament.CodeTest.Tests.Integrations;
@@ -24,7 +23,7 @@ public class PersonRepositoryIntegrationTests
     [Fact]
     public async Task View_ReturnsById_Person()
     {
-        var eg = _base.Scope.ServiceProvider.GetService<IPersonRepository<Person, SearchRequest>>();
+        var eg = _base.Scope.ServiceProvider.GetService<IBasePersonRepository<Person>>();
         var person = new Person
         {
             FirstName = "Test",
@@ -34,7 +33,7 @@ public class PersonRepositoryIntegrationTests
         _db.People.Add(person);
         await _db.SaveChangesAsync();
 
-        var result = await eg!.View(person.Id);
+        var result = await eg!.GetById(person.Id);
 
         Assert.Multiple(() =>
         {

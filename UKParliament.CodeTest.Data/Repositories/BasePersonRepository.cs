@@ -5,12 +5,10 @@ using UKParliament.CodeTest.Data.Requests;
 
 namespace UKParliament.CodeTest.Data.Repositories;
 
-public class BasePersonRepository<T, TSearch>(PersonManagerContext db)
-    : IPersonRepository<T, TSearch>
+public abstract class BasePersonRepository<T>(PersonManagerContext db) : IBasePersonRepository<T>
     where T : Person
-    where TSearch : SearchRequest
 {
-    public async Task<T?> Create(T person)
+    public async Task<T> Create(T person)
     {
         db.Add(person);
         await db.SaveChangesAsync();
@@ -27,10 +25,44 @@ public class BasePersonRepository<T, TSearch>(PersonManagerContext db)
         await db.SaveChangesAsync();
     }
 
-    protected virtual IQueryable<T> CreateSearchQuery(TSearch? request)
+    /// <summary>
+    /// Allows modification of the main Search method, to, for example,
+    /// add type specific includes. E.g: <c>Manager.Employees</c>
+    /// </summary>
+    /// <param name="request"></param>
+    /// <returns></returns>
+    protected virtual IQueryable<T> CreateSearchQuery(SearchRequest? request)
     {
-        var query = db.Set<T>().Include(p => p.Address).AsQueryable();
-        if (request is not null && !string.IsNullOrWhiteSpace(request.TextSearch))
+        var query = db.Set<T>().AsQueryable();
+        if (request is not null)
+        {
+            query = SearchByText(request, query);
+            query = SearchByType(request, query);
+        }
+
+        return query.Include(p => p.Address).OrderBy(p => p.Id);
+    }
+
+    public IQueryable<T> Search(SearchRequest? request)
+    {
+        var query = CreateSearchQuery(request);
+
+        return query.OfType<T>();
+    }
+
+    private static IQueryable<T> SearchByType(SearchRequest request, IQueryable<T> query)
+    {
+        if (request.EmployeeType.HasValue)
+        {
+            query = query.Where(p => p.EmployeeType == request.EmployeeType);
+        }
+
+        return query;
+    }
+
+    private static IQueryable<T> SearchByText(SearchRequest request, IQueryable<T> query)
+    {
+        if (!string.IsNullOrWhiteSpace(request.TextSearch))
         {
             query = query.Where(p =>
                 EF.Functions.Like(p.FirstName, $"%{request.TextSearch}%")
@@ -41,14 +73,7 @@ public class BasePersonRepository<T, TSearch>(PersonManagerContext db)
         return query;
     }
 
-    public IList<T> Search(TSearch? request)
-    {
-        var query = CreateSearchQuery(request);
-
-        return [.. query.OfType<T>()];
-    }
-
-    public async Task<T?> Update(T person)
+    public async Task<T> Update(T person)
     {
         db.Update(person);
         await db.SaveChangesAsync();
@@ -56,7 +81,7 @@ public class BasePersonRepository<T, TSearch>(PersonManagerContext db)
         return person;
     }
 
-    public async Task<T?> View(int id)
+    public async Task<T?> GetById(int id)
     {
         return await db.Set<T>().Where(p => p.Id == id).FirstOrDefaultAsync();
     }

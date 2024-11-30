@@ -1,34 +1,73 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
+using UKParliament.CodeTest.Data.Requests;
+using UKParliament.CodeTest.Data.ViewModels;
+using UKParliament.CodeTest.Services.Services.Interfaces;
 
 namespace UKParliament.CodeTest.Web.Controllers.Api;
 
 [Route("api/[controller]")]
 [ApiController]
-public class PersonController : ControllerBase
+public class PersonController(IPersonService personService, IValidator<PersonViewModel> validator)
+    : ControllerBase
 {
-    // GET: api/<PersonController>
     [HttpGet]
-    public IEnumerable<string> Get()
+    public async Task<ActionResult<IEnumerable<PersonViewModel>>> Get(
+        [FromQuery] SearchRequest request
+    )
     {
-        return new string[] { "value1", "value2" };
+        var results = await personService.Search(request);
+        return Ok(results);
     }
 
-    // GET api/<PersonController>/5
     [HttpGet("{id}")]
-    public string Get(int id)
+    public async Task<ActionResult<PersonViewModel>> Get(int id)
     {
-        return "value";
+        var result = await personService.View(id);
+        if (result is null)
+        {
+            return BadRequest("Person not found");
+        }
+
+        return Ok(result);
     }
 
-    // POST api/<PersonController>
     [HttpPost]
-    public void Post([FromBody] string value) { }
+    public async Task<ActionResult<PersonViewModel>> Post([FromBody] PersonViewModel person)
+    {
+        var validation = await validator.ValidateAsync(person);
+        if (!validation.IsValid)
+        {
+            return BadRequest(validation);
+        }
 
-    // PUT api/<PersonController>/5
+        var result = await personService.Create(person);
+        return Ok(result);
+    }
+
     [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value) { }
+    public async Task<ActionResult<PersonViewModel>> Put([FromBody] PersonViewModel person)
+    {
+        var validation = await validator.ValidateAsync(person);
+        if (!validation.IsValid)
+        {
+            return BadRequest(validation);
+        }
 
-    // DELETE api/<PersonController>/5
+        var result = await personService.Update(person);
+        if (result is null)
+        {
+            return BadRequest("Person not found");
+        }
+
+        return Ok(result);
+    }
+
     [HttpDelete("{id}")]
-    public void Delete(int id) { }
+    public async Task<ActionResult> Delete(int id)
+    {
+        await personService.Delete(id);
+
+        return NoContent();
+    }
 }

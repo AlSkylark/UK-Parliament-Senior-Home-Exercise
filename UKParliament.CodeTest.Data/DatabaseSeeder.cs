@@ -60,9 +60,9 @@ public static class DatabaseSeeder
         context.PayBands.AddRange(GetPayBands);
         context.SaveChanges();
 
-        var managers = CreateFakeManager(5, context);
+        context.People.AddRange(CreateFakeGuests(3));
+        context.Managers.AddRange(CreateFakeManager(5, context));
 
-        context.Managers.AddRange(managers);
         context.SaveChanges();
     }
 
@@ -90,6 +90,11 @@ public static class DatabaseSeeder
             .ApplyEmployeeRules(context)
             .RuleFor(p => p.Manager, manager)
             .Generate(amount);
+    }
+
+    public static IEnumerable<Person> CreateFakeGuests(int amount)
+    {
+        return new Faker<Person>().ApplyPersonRules().Generate(amount);
     }
 
     public static Faker<T> ApplyEmployeeRules<T>(this Faker<T> faker, PersonManagerContext context)

@@ -1,25 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UKParliament.CodeTest.Data.Requests;
-using UKParliament.CodeTest.Services.Interfaces;
 
 namespace UKParliament.CodeTest.Web.Controllers.Api;
 
 [Route("api/[controller]")]
 [ApiController]
-public class EmployeeController(IEmployeeService employeeService) : ControllerBase
+public class EmployeeController() : ControllerBase
 {
     [HttpGet]
-    public ActionResult<IEnumerable<Object>> Search([FromQuery] EmployeeSearchRequest? request)
+    public ActionResult<IEnumerable<Object>> Search([FromQuery] SearchRequest? request)
     {
-        var results = employeeService.Search(request);
-        return Ok(
-            results.Select(e => new
-            {
-                e.LastName,
-                e.FirstName,
-                e.PayBand,
-            })
-        );
+        return Ok();
     }
 
     [HttpGet("{id}")]

@@ -2,6 +2,7 @@ using System.Reflection;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using CommissionMe.API.Infrastructure.Database;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using UKParliament.CodeTest.Data;
 
@@ -25,9 +26,9 @@ public class Program
                     .UseInMemoryDatabase("PersonManager")
                     .AddInterceptors(services.GetRequiredService<CreatedUpdatedInterceptor>())
         );
-
-        //builder.Services.AddScoped<IPersonRepository<Person, SearchRequest>, PersonRepository>();
-        //builder.Services.AddScoped<IPersonService, PersonService>();
+        builder.Services.Configure<ApiConfiguration>(
+            builder.Configuration.GetSection(ApiConfiguration.Section)
+        );
 
         builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
         {

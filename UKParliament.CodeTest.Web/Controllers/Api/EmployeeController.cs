@@ -1,30 +1,100 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
+using UKParliament.CodeTest.Data.HATEOAS;
+using UKParliament.CodeTest.Data.HATEOAS.Interfaces;
 using UKParliament.CodeTest.Data.Requests;
+using UKParliament.CodeTest.Data.ViewModels;
+using UKParliament.CodeTest.Services.HATEOAS.Interfaces;
+using UKParliament.CodeTest.Services.Services.Interfaces;
 
 namespace UKParliament.CodeTest.Web.Controllers.Api;
 
 [Route("api/[controller]")]
 [ApiController]
-public class EmployeeController() : ControllerBase
+public class EmployeeController(
+    IEmployeeService employeeService,
+    IPersonResourceService<EmployeeViewModel> resourceService,
+    IValidator<EmployeeViewModel> validator
+) : ControllerBase
 {
+    private string GetControllerName() =>
+        ControllerContext.RouteData.Values["controller"]?.ToString()?.ToLower() ?? "";
+
     [HttpGet]
-    public ActionResult<IEnumerable<Object>> Search([FromQuery] SearchRequest? request)
+    public async Task<
+        ActionResult<IResource<IResourceCollection<IResource<EmployeeViewModel>>>>
+    > Search([FromQuery] SearchRequest? request)
     {
-        return Ok();
+        var results = await employeeService.Search(request);
+        var collection = new ResourceCollection<IResource<EmployeeViewModel>>
+        {
+            Pagination = results.Pagination,
+            Results = results.Results.Select(resourceService.GeneratePersonResource),
+        };
+        var resource = resourceService.GenerateCollectionResource(collection, GetControllerName());
+        return Ok(resource);
     }
 
     [HttpGet("{id}")]
-    public string View(int id)
+    public async Task<ActionResult<IResource<EmployeeViewModel>>> View(int id)
     {
-        return "value";
+        var result = await employeeService.View(id);
+        if (result is null)
+        {
+            return BadRequest("Person not found");
+        }
+
+        var resource = resourceService.GeneratePersonResource(result);
+        return Ok(resource);
     }
 
     [HttpPost]
-    public void Create([FromBody] string value) { }
+    public async Task<ActionResult<IResource<EmployeeViewModel>>> Post(
+        [FromBody] EmployeeViewModel person
+    )
+    {
+        var validation = await validator.ValidateAsync(person);
+        if (!validation.IsValid)
+        {
+            return BadRequest(validation);
+        }
+
+        var result = await employeeService.Create(person);
+        if (result is null)
+        {
+            return BadRequest("Failed to create person");
+        }
+
+        var resource = resourceService.GeneratePersonResource(result);
+        return Ok(resource);
+    }
 
     [HttpPut("{id}")]
-    public void Update(int id, [FromBody] string value) { }
+    public async Task<ActionResult<IResource<EmployeeViewModel>>> Put(
+        [FromBody] EmployeeViewModel person
+    )
+    {
+        var validation = await validator.ValidateAsync(person);
+        if (!validation.IsValid)
+        {
+            return BadRequest(validation);
+        }
+
+        var result = await employeeService.Update(person);
+        if (result is null)
+        {
+            return BadRequest("Person not found");
+        }
+
+        var resource = resourceService.GeneratePersonResource(result);
+        return Ok(resource);
+    }
 
     [HttpDelete("{id}")]
-    public void Delete(int id) { }
+    public async Task<ActionResult> Delete(int id)
+    {
+        await employeeService.Delete(id);
+
+        return NoContent();
+    }
 }

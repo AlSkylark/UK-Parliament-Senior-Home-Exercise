@@ -2,6 +2,6 @@
 
 public interface IResourceCollection<T>
 {
-    public IEnumerable<IResource<T>> Results { get; }
+    public IEnumerable<T> Results { get; }
     public Pagination Pagination { get; }
 }

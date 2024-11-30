@@ -1,5 +1,6 @@
 ﻿using UKParliament.CodeTest.Data.HATEOAS;
 using UKParliament.CodeTest.Data.HATEOAS.Interfaces;
+using UKParliament.CodeTest.Data.Models;
 using UKParliament.CodeTest.Data.Repositories.Interfaces;
 using UKParliament.CodeTest.Data.Requests;
 using UKParliament.CodeTest.Data.ViewModels;
@@ -11,29 +12,20 @@ namespace UKParliament.CodeTest.Services.Services;
 
 public class PersonService(
     IPersonRepository personRepository,
-    IPersonMapper mapper,
-    IPaginatorService paginatorService,
-    IResourceService<PersonViewModel> resourceService
+    IPersonMapper<Person, PersonViewModel> mapper,
+    IPaginatorService paginatorService
 ) : IPersonService
 {
     const string PATH = "person";
 
-    public async Task<IResource<PersonViewModel>> Create(PersonViewModel model)
+    public async Task<PersonViewModel?> Create(PersonViewModel model)
     {
-        var mappedRequest = mapper.MapToDb(model);
-        try
-        {
-            var result = await personRepository.Create(mappedRequest);
-            var mappedResult = mapper.Map(result);
-            var resource = resourceService.GenerateResource(mappedResult, PATH);
+        var mappedRequest = mapper.MapForCreate(model);
 
-            return resource;
-        }
-        catch (Exception e)
-        {
-            //TODO: We could add logging here
-            throw e.GetBaseException();
-        }
+        var result = await personRepository.Create(mappedRequest);
+        var mappedResult = mapper.Map(result);
+
+        return mappedResult;
     }
 
     public async Task Delete(int id)
@@ -41,9 +33,7 @@ public class PersonService(
         await personRepository.Delete(id);
     }
 
-    public async Task<IResource<IResourceCollection<PersonViewModel>>> Search(
-        SearchRequest? request
-    )
+    public async Task<IResourceCollection<PersonViewModel>> Search(SearchRequest? request)
     {
         var defaultRequest = request ?? new();
         var query = personRepository.SearchAll(request);
@@ -51,8 +41,7 @@ public class PersonService(
         var data = paginatorService.Paginate(query, defaultRequest);
         var pagination = await paginatorService.CreateAsync(query, defaultRequest, PATH);
 
-        var results = data.Select(mapper.Map)
-            .Select(m => resourceService.GenerateResource(m, PATH));
+        var results = data.Select(mapper.Map);
 
         var collection = new ResourceCollection<PersonViewModel>
         {
@@ -60,15 +49,18 @@ public class PersonService(
             Results = results,
         };
 
-        var resource = resourceService.GenerateCollectionResource(collection, PATH);
-
-        return resource;
+        return collection;
     }
 
-    public async Task<IResource<PersonViewModel>?> Update(PersonViewModel model)
+    public async Task<PersonViewModel?> Update(PersonViewModel model)
     {
-        //var person = await personRepository.GetById((int)model.Id!);
-        var mappedRequest = mapper.MapToDb(model);
+        var existing = await personRepository.GetById(model.Id ?? 0);
+        if (existing is null || existing.EmployeeType != EmployeeTypeEnum.Guest)
+        {
+            return null;
+        }
+
+        var mappedRequest = mapper.MapForSave(model, existing);
         var updated = await personRepository.Update(mappedRequest);
 
         var updatedMapped = mapper.Map(updated);
@@ -77,11 +69,10 @@ public class PersonService(
             return null;
         }
 
-        var resource = resourceService.GenerateResource(updatedMapped, PATH);
-        return resource;
+        return updatedMapped;
     }
 
-    public async Task<IResource<PersonViewModel>?> View(int id)
+    public async Task<PersonViewModel?> View(int id)
     {
         var person = await personRepository.GetById(id);
         if (person is null)
@@ -90,7 +81,6 @@ public class PersonService(
         }
 
         var mapped = mapper.Map(person);
-        var resource = resourceService.GenerateResource(mapped, PATH);
-        return resource;
+        return mapped;
     }
 }

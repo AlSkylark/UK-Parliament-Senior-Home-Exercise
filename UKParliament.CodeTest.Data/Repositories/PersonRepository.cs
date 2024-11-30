@@ -29,32 +29,4 @@ public class PersonRepository(PersonManagerContext db)
 
         return query;
     }
-
-    private static IQueryable<Person> SearchByPayBand(
-        IQueryable<Person> query,
-        SearchRequest request
-    )
-    {
-        if (!string.IsNullOrWhiteSpace(request.PayBand))
-        {
-            query = query.Where(p =>
-                string.Compare((p as Employee)!.PayBand!.Name, request.PayBand, true) == 0
-            );
-        }
-        return query;
-    }
-
-    private static IQueryable<Person> SearchByDepartment(
-        IQueryable<Person> query,
-        SearchRequest request
-    )
-    {
-        if (!string.IsNullOrWhiteSpace(request.Department))
-        {
-            query = query.Where(p =>
-                string.Compare((p as Employee)!.Department!.Name, request.Department, true) == 0
-            );
-        }
-        return query;
-    }
 }

@@ -1,12 +1,10 @@
-﻿using UKParliament.CodeTest.Data.Requests;
+﻿using UKParliament.CodeTest.Data.Models;
+using UKParliament.CodeTest.Data.Requests;
 
 namespace UKParliament.CodeTest.Data.Repositories.Interfaces;
 
-public interface IBasePersonRepository<T>
+public interface IBasePersonRepository<T> : IBaseRepository<T>
+    where T : Person
 {
-    Task<T> Create(T person);
-    Task<T?> GetById(int id);
     IQueryable<T> Search(SearchRequest? request);
-    Task<T> Update(T person);
-    Task Delete(int id);
 }

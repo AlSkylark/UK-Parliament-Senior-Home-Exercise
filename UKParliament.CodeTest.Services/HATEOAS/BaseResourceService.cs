@@ -12,14 +12,14 @@ public abstract class BaseResourceService<T>(IOptions<ApiConfiguration> config)
     : IResourceService<T>
     where T : BaseViewModel
 {
-    private readonly ApiConfiguration _config = config.Value;
+    protected readonly ApiConfiguration _config = config.Value;
 
-    public virtual IResource<IResourceCollection<T>> GenerateCollectionResource(
-        IResourceCollection<T> collection,
+    public virtual IResource<IResourceCollection<IResource<T>>> GenerateCollectionResource(
+        IResourceCollection<IResource<T>> collection,
         string path
     )
     {
-        return new Resource<IResourceCollection<T>>
+        return new Resource<IResourceCollection<IResource<T>>>
         {
             Data = collection,
             Links =

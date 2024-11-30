@@ -1,10 +1,8 @@
-﻿using UKParliament.CodeTest.Data.Models;
-using UKParliament.CodeTest.Data.ViewModels;
+﻿namespace UKParliament.CodeTest.Services.Mappers.Interfaces;
 
-namespace UKParliament.CodeTest.Services.Mappers.Interfaces;
-
-public interface IPersonMapper
+public interface IPersonMapper<T, TViewModel>
 {
-    PersonViewModel Map(Person person);
-    Person MapToDb(PersonViewModel vm);
+    TViewModel Map(T person);
+    T MapForSave(TViewModel vm, T existing);
+    T MapForCreate(TViewModel vm);
 }

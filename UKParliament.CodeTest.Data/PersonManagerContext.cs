@@ -10,7 +10,7 @@ public class PersonManagerContext(DbContextOptions<PersonManagerContext> options
     {
         modelBuilder
             .Entity<Person>()
-            .HasDiscriminator<EmployeeTypeEnum>("PersonType")
+            .HasDiscriminator<EmployeeTypeEnum>("EmployeeType")
             .HasValue<Person>(EmployeeTypeEnum.Guest)
             .HasValue<Employee>(EmployeeTypeEnum.Employee)
             .HasValue<Manager>(EmployeeTypeEnum.Manager);

@@ -10,6 +10,6 @@ public class Employee : Person
     public PayBand? PayBand { get; set; }
     public Department? Department { get; set; }
 
-    public int ManagerId { get; set; }
+    public int? ManagerId { get; set; }
     public Manager? Manager { get; set; }
 }

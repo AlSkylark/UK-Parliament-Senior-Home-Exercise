@@ -4,5 +4,5 @@ using UKParliament.CodeTest.Data.ViewModels;
 
 namespace UKParliament.CodeTest.Services.HATEOAS;
 
-public class PersonResourceService(IOptions<ApiConfiguration> config)
-    : BasePersonResourceService<PersonViewModel>(config) { }
+public class EmployeeResourceService(IOptions<ApiConfiguration> config)
+    : BasePersonResourceService<EmployeeViewModel>(config) { }

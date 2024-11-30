@@ -4,11 +4,13 @@ using UKParliament.CodeTest.Services.Services.Interfaces;
 
 namespace UKParliament.CodeTest.Services.Validators;
 
-public class EmployeeValidator : AbstractValidator<EmployeeViewModel>
+public class EmployeeCreateValidator : AbstractValidator<EmployeeViewModel>
 {
-    public EmployeeValidator(ILookUpService lookUpService)
+    public EmployeeCreateValidator(ILookUpService lookUpService)
     {
-        Include(new PersonValidator());
+        RuleFor(p => p.FirstName).NotEmpty().MinimumLength(2);
+
+        RuleFor(p => p.LastName).NotEmpty().MinimumLength(2);
 
         RuleFor(e => e.PayBand)
             .Must(pb => lookUpService.SearchPayBands(pb).Any())

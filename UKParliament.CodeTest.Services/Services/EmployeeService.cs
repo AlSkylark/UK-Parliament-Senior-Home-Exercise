@@ -12,7 +12,7 @@ namespace UKParliament.CodeTest.Services.Services;
 
 public class EmployeeService(
     IEmployeeRepository repo,
-    IPersonMapper<Employee, EmployeeViewModel> mapper,
+    IEmployeeMapper mapper,
     IPaginatorService paginatorService
 ) : IEmployeeService
 {

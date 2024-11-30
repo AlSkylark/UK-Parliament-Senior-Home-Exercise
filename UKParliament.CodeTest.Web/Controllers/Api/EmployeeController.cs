@@ -13,7 +13,7 @@ namespace UKParliament.CodeTest.Web.Controllers.Api;
 [ApiController]
 public class EmployeeController(
     IEmployeeService employeeService,
-    IPersonResourceService<EmployeeViewModel> resourceService,
+    IResourceService<EmployeeViewModel> resourceService,
     IValidator<EmployeeViewModel> validator
 ) : ControllerBase
 {
@@ -29,7 +29,9 @@ public class EmployeeController(
         var collection = new ResourceCollection<IResource<EmployeeViewModel>>
         {
             Pagination = results.Pagination,
-            Results = results.Results.Select(resourceService.GeneratePersonResource),
+            Results = results.Results.Select(d =>
+                resourceService.GenerateResource(d, GetControllerName())
+            ),
         };
         var resource = resourceService.GenerateCollectionResource(collection, GetControllerName());
         return Ok(resource);
@@ -41,10 +43,10 @@ public class EmployeeController(
         var result = await employeeService.View(id);
         if (result is null)
         {
-            return BadRequest("Person not found");
+            return BadRequest("Employee not found");
         }
 
-        var resource = resourceService.GeneratePersonResource(result);
+        var resource = resourceService.GenerateResource(result, GetControllerName());
         return Ok(resource);
     }
 
@@ -62,10 +64,10 @@ public class EmployeeController(
         var result = await employeeService.Create(person);
         if (result is null)
         {
-            return BadRequest("Failed to create person");
+            return BadRequest("Failed to create employee");
         }
 
-        var resource = resourceService.GeneratePersonResource(result);
+        var resource = resourceService.GenerateResource(result, GetControllerName());
         return Ok(resource);
     }
 
@@ -83,10 +85,10 @@ public class EmployeeController(
         var result = await employeeService.Update(person);
         if (result is null)
         {
-            return BadRequest("Person not found");
+            return BadRequest("Employee not found");
         }
 
-        var resource = resourceService.GeneratePersonResource(result);
+        var resource = resourceService.GenerateResource(result, GetControllerName());
         return Ok(resource);
     }
 

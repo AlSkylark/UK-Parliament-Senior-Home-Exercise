@@ -5,7 +5,7 @@ using UKParliament.CodeTest.Data.Requests;
 namespace UKParliament.CodeTest.Data.Repositories;
 
 public abstract class BasePersonRepository<T>(PersonManagerContext db) : BaseRepository<T>(db)
-    where T : Person
+    where T : Employee
 {
     /// <summary>
     /// Allows modification of the main Search method, to, for example,

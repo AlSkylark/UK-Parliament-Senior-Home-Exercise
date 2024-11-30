@@ -1,6 +1,8 @@
-﻿namespace UKParliament.CodeTest.Data.ViewModels;
+﻿using UKParliament.CodeTest.Data.Models;
 
-public class EmployeeViewModel : PersonViewModel
+namespace UKParliament.CodeTest.Data.ViewModels;
+
+public class EmployeeViewModel : BaseViewModel
 {
     public decimal? Salary { get; set; }
     public string? BankAccount { get; set; }
@@ -10,4 +12,15 @@ public class EmployeeViewModel : PersonViewModel
 
     public int? ManagerId { get; set; }
     public ShortManagerViewModel? Manager { get; set; }
+
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+    public string? EmployeeType { get; set; }
+    public string? PayBand { get; set; }
+    public string? Department { get; set; }
+    public DateOnly? DoB { get; set; }
+    public bool Inactive { get; set; }
+    public bool HasManager { get; set; }
+
+    public Address? Address { get; set; }
 }

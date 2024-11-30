@@ -9,9 +9,8 @@ public class PersonManagerContext(DbContextOptions<PersonManagerContext> options
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder
-            .Entity<Person>()
+            .Entity<Employee>()
             .HasDiscriminator<EmployeeTypeEnum>("EmployeeType")
-            .HasValue<Person>(EmployeeTypeEnum.Guest)
             .HasValue<Employee>(EmployeeTypeEnum.Employee)
             .HasValue<Manager>(EmployeeTypeEnum.Manager);
 
@@ -24,7 +23,6 @@ public class PersonManagerContext(DbContextOptions<PersonManagerContext> options
         base.OnModelCreating(modelBuilder);
     }
 
-    public DbSet<Person> People { get; set; } = null!;
     public DbSet<Employee> Employees { get; set; } = null!;
     public DbSet<Manager> Managers { get; set; } = null!;
     public DbSet<PayBand> PayBands { get; set; } = null!;

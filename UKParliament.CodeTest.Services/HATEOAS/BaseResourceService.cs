@@ -26,7 +26,7 @@ public abstract class BaseResourceService<T>(IOptions<ApiConfiguration> config)
             [
                 Link.GenerateLink(
                     "self",
-                    UrlHelpers.Generate(_config.BaseUrl, path),
+                    UrlHelpers.Generate(_config.BaseUrl, _config.ApiPrefix, path),
                     "GET",
                     "POST"
                 ),
@@ -43,7 +43,7 @@ public abstract class BaseResourceService<T>(IOptions<ApiConfiguration> config)
             [
                 Link.GenerateLink(
                     "self",
-                    UrlHelpers.Generate(_config.BaseUrl, path, $"{data.Id}"),
+                    UrlHelpers.Generate(_config.BaseUrl, _config.ApiPrefix, path, $"{data.Id}"),
                     "GET",
                     "PUT",
                     "DELETE"

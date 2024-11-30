@@ -1,6 +1,5 @@
 ﻿using Bogus;
 using UKParliament.CodeTest.Data.Models;
-using Person = UKParliament.CodeTest.Data.Models.Person;
 
 namespace UKParliament.CodeTest.Data;
 
@@ -60,7 +59,6 @@ public static class DatabaseSeeder
         context.PayBands.AddRange(GetPayBands);
         context.SaveChanges();
 
-        context.People.AddRange(CreateFakeGuests(3));
         context.Managers.AddRange(CreateFakeManager(5, context));
 
         context.SaveChanges();
@@ -73,7 +71,6 @@ public static class DatabaseSeeder
     )
     {
         return new Faker<Manager>()
-            .ApplyPersonRules()
             .ApplyEmployeeRules(context)
             .RuleFor(p => p.Employees, (f, r) => CreateFakeEmployee(employees, r, context))
             .Generate(amount);
@@ -86,15 +83,9 @@ public static class DatabaseSeeder
     )
     {
         return new Faker<Employee>()
-            .ApplyPersonRules()
             .ApplyEmployeeRules(context)
             .RuleFor(p => p.Manager, manager)
             .Generate(amount);
-    }
-
-    public static IEnumerable<Person> CreateFakeGuests(int amount)
-    {
-        return new Faker<Person>().ApplyPersonRules().Generate(amount);
     }
 
     public static Faker<T> ApplyEmployeeRules<T>(this Faker<T> faker, PersonManagerContext context)
@@ -111,13 +102,7 @@ public static class DatabaseSeeder
             .RuleFor(
                 p => p.Salary,
                 (f, r) => f.Finance.Amount(r.PayBand!.MinPay, r.PayBand!.MaxPay)
-            );
-    }
-
-    public static Faker<T> ApplyPersonRules<T>(this Faker<T> faker)
-        where T : Person
-    {
-        return faker
+            )
             .RuleFor(p => p.Address, f => CreateFakeAddress())
             .RuleFor(p => p.DoB, f => f.Date.PastDateOnly(f.Random.Number(30, 70)))
             .RuleFor(p => p.FirstName, f => f.Name.FirstName())

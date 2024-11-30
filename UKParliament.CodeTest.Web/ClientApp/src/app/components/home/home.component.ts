@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { PersonService } from '../../services/person.service';
-import { PersonViewModel } from 'src/app/models/person-view-model';
+import { PersonService } from '../../services/employee.service';
+import { EmployeeViewModel } from 'src/app/models/employee-view-model';
 
 @Component({
   selector: 'app-home',
@@ -10,7 +10,7 @@ import { PersonViewModel } from 'src/app/models/person-view-model';
 export class HomeComponent {
   test: string = "";
 
-  people: PersonViewModel[] = [];
+  people: EmployeeViewModel[] = [];
 
   constructor(private personService: PersonService) {
     this.getPersonById(1);

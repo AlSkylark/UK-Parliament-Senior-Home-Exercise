@@ -1,0 +1,13 @@
+@use "tokens" as t;
+
+.wrapper {
+    height: 100%;
+    .input {
+        height: 100%;
+        width: 100%;
+        @include t.input-style;
+        &:focus {
+            @include t.focus-style;
+        }
+    }
+}

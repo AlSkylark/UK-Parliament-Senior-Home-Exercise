@@ -1,0 +1,19 @@
+@use "sass:color";
+
+$colour-white: white;
+
+$colour-purple: #373151;
+$colour-purple-darker: color.adjust($colour-purple, $lightness: -5%);
+$colour-purple-lighter: color.adjust($colour-purple, $lightness: 15%);
+
+$colour-grey-1: #4d4d4d;
+$colour-grey-2: #717171;
+$colour-grey-3: #f8f7f7;
+
+$colour-black: #212121;
+
+$colour-warning-light: #fffbea;
+$colour-warning-dark: #fff1b9;
+
+$colour-manager-light: #d9edff;
+$colour-manager-dark: #b7d8f5;

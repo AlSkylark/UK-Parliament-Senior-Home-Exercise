@@ -1,24 +1,26 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { EmployeeViewModel } from '../models/employee-view-model';
+import { FilterService } from './filter.service';
+import { Resource } from '../models/resource';
+import { ResourceCollection } from '../models/resource-collection';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PersonService {
-  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) { }
 
-  // Below is some sample code to help get you started calling the API
-  getById(id: number): Observable<EmployeeViewModel> {
-    return this.http.get<EmployeeViewModel>(this.baseUrl + `api/person/${id}`)
-  }
+export class EmployeeService {
+  constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string, private filterService: FilterService) { }
 
-  search(): Observable<EmployeeViewModel[]> {
-    return this.http.get<EmployeeViewModel[]>(this.baseUrl + "api/employee/")
-  }
+  employeeListSubject = new Subject<ResourceCollection<Resource<EmployeeViewModel>>>();
 
-  get(url: string) {
-
+  public fetchEmployees() {
+    const filters = this.filterService.getCurrentFilters();
+    const params = new URLSearchParams(filters);
+    this.http.get<Resource<ResourceCollection<Resource<EmployeeViewModel>>>>(`${this.baseUrl}api/employee?${params}`).subscribe(employees => {
+      this.employeeListSubject.next(employees.data);
+    })
   }
 }
+

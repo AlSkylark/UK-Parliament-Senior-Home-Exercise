@@ -1,0 +1,14 @@
+<div class="container">
+  <div class="pagination">pag</div>
+  <div class="content">
+    @if (employeeCollection?.results?.length === 0) {
+      <div class="not-found">
+        No employees were found, please refine your search.
+      </div>
+    }
+    @for (item of employeeCollection?.results; track $index) {
+      <app-card [employee]="item"></app-card>
+    }
+  </div>
+  <div class="pagination">pag</div>
+</div>

@@ -5,11 +5,12 @@ import { Resource } from 'src/app/models/resource';
 import { ResourceCollection } from 'src/app/models/resource-collection';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { CardComponent } from "../card/card.component";
+import { PaginationComponent } from "../../pagination/pagination.component";
 
 @Component({
   selector: 'app-result-list',
   standalone: true,
-  imports: [CommonModule, CardComponent],
+  imports: [CommonModule, CardComponent, PaginationComponent],
   templateUrl: './result-list.component.html',
   styleUrl: './result-list.component.scss'
 })

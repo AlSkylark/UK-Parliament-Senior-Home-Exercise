@@ -48,7 +48,8 @@ public class LookUpService(
                 .Select(mapper.MapToSimple),
             LookupItemsEnum.EmployeeType => EnumHelper
                 .GetNameValues(typeof(EmployeeTypeEnum))
-                .Select(mapper.MapFromString),
+                .Select(mapper.MapFromString)
+                .OrderBy(i => i.Name),
             null => [],
             _ => [],
         };
@@ -66,6 +67,6 @@ public class LookUpService(
             );
         }
 
-        return items.AsEnumerable();
+        return items.OrderBy(i => i.Name).AsEnumerable();
     }
 }

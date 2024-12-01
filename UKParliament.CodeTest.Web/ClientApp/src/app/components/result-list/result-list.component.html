@@ -1,14 +1,25 @@
 <div class="container">
-  <div class="pagination">pag</div>
-  <div class="content">
-    @if (employeeCollection?.results?.length === 0) {
+  @if (employeeCollection?.results?.length === 0) {
+    <div class="content">
       <div class="not-found">
         No employees were found, please refine your search.
       </div>
-    }
-    @for (item of employeeCollection?.results; track $index) {
-      <app-card [employee]="item"></app-card>
-    }
-  </div>
-  <div class="pagination">pag</div>
+    </div>
+  } @else {
+    <div class="pagination">
+      <app-pagination
+        [pagination]="employeeCollection?.pagination"
+      ></app-pagination>
+    </div>
+    <div class="content">
+      @for (item of employeeCollection?.results; track $index) {
+        <app-card [employee]="item"></app-card>
+      }
+    </div>
+    <div class="pagination">
+      <app-pagination
+        [pagination]="employeeCollection?.pagination"
+      ></app-pagination>
+    </div>
+  }
 </div>

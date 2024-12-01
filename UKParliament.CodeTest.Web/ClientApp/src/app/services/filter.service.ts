@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SearchRequest } from '../models/search-request';
 import { Subject } from 'rxjs';
+import { Pagination } from '../models/pagination';
 
 @Injectable({
   providedIn: 'root'

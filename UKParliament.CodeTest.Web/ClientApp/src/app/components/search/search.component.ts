@@ -16,9 +16,12 @@ import { EmployeeService } from 'src/app/services/employee.service';
 })
 export class SearchComponent implements OnInit {
 
+  editorIsOpen = false;
+
   constructor(private filterService: FilterService, private employeeService: EmployeeService) { }
   ngOnInit(): void {
     this.filterService.filtersSubject.subscribe(f => this.filters = f);
+    this.employeeService.employeeSubject.subscribe(e => this.editorIsOpen = !!e);
     this.employeeService.fetchEmployees();
   }
 

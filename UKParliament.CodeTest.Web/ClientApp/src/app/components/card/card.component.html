@@ -18,7 +18,7 @@
     <div class="name">
       {{ employee.data.lastName }},
       <span class="first-name">{{ employee.data.firstName }}</span>
-      @if (employee.data.hasManager) {
+      @if (employee.data.hasManager && !editorIsOpen) {
         <div class="manager">
           Manager:
           <a href="#" (click)="openManagerProfile($event)">
@@ -33,7 +33,7 @@
     </div>
   </div>
   <div class="profile">
-    <button type="button">View profile</button>
+    <button type="button" (click)="openEmployeeProfile()">View profile</button>
   </div>
   <div
     class="status"

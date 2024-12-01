@@ -16,10 +16,12 @@ import { PaginationComponent } from "../../pagination/pagination.component";
 })
 export class ResultListComponent {
 
+  editorIsOpen = false;
   employeeCollection: ResourceCollection<Resource<EmployeeViewModel>> | undefined;
 
   constructor(private employeeService: EmployeeService) {
     this.employeeService.employeeListSubject.subscribe(collection => this.employeeCollection = collection);
+    this.employeeService.employeeSubject.subscribe(e => this.editorIsOpen = !!e);
   }
 
 }

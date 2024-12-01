@@ -1,6 +1,6 @@
 <div class="container">
   <form (submit)="$event.preventDefault(); search()">
-    <div class="search">
+    <div class="search" [ngClass]="{ 'editor-open': editorIsOpen }">
       <div class="input">
         <app-textbox
           [id]="'search'"
@@ -37,7 +37,10 @@
       </button>
     </div>
 
-    <div class="filters" [ngClass]="{ hidden: !showFilters }">
+    <div
+      class="filters"
+      [ngClass]="{ hidden: !showFilters, 'editor-open': editorIsOpen }"
+    >
       <app-filter-select
         [text]="'department'"
         [id]="'department-filter'"

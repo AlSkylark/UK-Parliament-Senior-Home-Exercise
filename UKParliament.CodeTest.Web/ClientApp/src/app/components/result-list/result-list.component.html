@@ -11,7 +11,7 @@
         [pagination]="employeeCollection?.pagination"
       ></app-pagination>
     </div>
-    <div class="content">
+    <div class="content" [ngClass]="{ 'editor-open': editorIsOpen }">
       @for (item of employeeCollection?.results; track $index) {
         <app-card [employee]="item"></app-card>
       }

@@ -1,6 +1,8 @@
-﻿namespace UKParliament.CodeTest.Data.Models;
+﻿using UKParliament.CodeTest.Data.ViewModels;
 
-public class PayBand : BaseEntity
+namespace UKParliament.CodeTest.Data.Models;
+
+public class PayBand : BaseEntity, ILookupItem
 {
     public required string Name { get; set; }
     public decimal MinPay { get; set; }

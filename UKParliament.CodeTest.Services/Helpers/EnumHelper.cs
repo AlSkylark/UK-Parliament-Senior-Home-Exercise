@@ -4,6 +4,23 @@ namespace UKParliament.CodeTest.Services.Helpers;
 
 public static class EnumHelper
 {
+    public static IEnumerable<string> GetNameValues(this Type enumType)
+    {
+        if (!enumType.IsEnum)
+        {
+            return [];
+        }
+
+        var values = Enum.GetValues(enumType);
+        List<string> names = [];
+        foreach (var name in values)
+        {
+            names.Add(name.ToString() ?? "");
+        }
+
+        return names;
+    }
+
     public static string GetDescription(this Enum enumValue)
     {
         var field = enumValue.GetType().GetField(enumValue.ToString());

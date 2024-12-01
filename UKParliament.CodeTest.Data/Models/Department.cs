@@ -1,6 +1,8 @@
-﻿namespace UKParliament.CodeTest.Data.Models;
+﻿using UKParliament.CodeTest.Data.ViewModels;
 
-public class Department : BaseEntity
+namespace UKParliament.CodeTest.Data.Models;
+
+public class Department : BaseEntity, ILookupItem
 {
     public required string Name { get; set; }
 }

@@ -1,4 +1,5 @@
-﻿using UKParliament.CodeTest.Data.Models;
+﻿using FluentValidation;
+using UKParliament.CodeTest.Data.Models;
 using UKParliament.CodeTest.Data.ViewModels;
 using UKParliament.CodeTest.Services.Helpers;
 using UKParliament.CodeTest.Services.Mappers.Interfaces;
@@ -6,10 +7,14 @@ using UKParliament.CodeTest.Services.Services.Interfaces;
 
 namespace UKParliament.CodeTest.Services.Mappers;
 
-public class EmployeeMapper(ILookUpService lookUpService) : IEmployeeMapper
+public class EmployeeMapper(
+    ILookUpService lookUpService,
+    IValidator<Employee> irregularityValidator
+) : IEmployeeMapper
 {
     public EmployeeViewModel Map(Employee person)
     {
+        var hasIrregularities = !irregularityValidator.Validate(person).IsValid;
         var vm = new EmployeeViewModel
         {
             Id = person.Id,
@@ -21,13 +26,16 @@ public class EmployeeMapper(ILookUpService lookUpService) : IEmployeeMapper
             Department = person.Department?.Name,
             PayBand = person.PayBand?.Name,
             EmployeeType = person.EmployeeType.GetDescription(),
-            HasManager = person.ManagerId > 0,
             Address = person.Address,
-            Inactive = person.DateLeft is not null,
             Salary = person.Salary,
             BankAccount = person.BankAccount,
             DateJoined = person.DateJoined,
             DateLeft = person.DateLeft,
+
+            Inactive = person.DateLeft is not null,
+            HasManager = person.ManagerId > 0,
+            IsManager = person.EmployeeType == EmployeeTypeEnum.Manager,
+            HasIrregularities = hasIrregularities,
         };
 
         if (person.Manager is not null)

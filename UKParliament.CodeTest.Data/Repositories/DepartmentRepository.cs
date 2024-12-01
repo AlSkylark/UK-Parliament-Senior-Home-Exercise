@@ -2,7 +2,7 @@
 
 namespace UKParliament.CodeTest.Data.Repositories;
 
-public class DepartmentRepository(PersonManagerContext db) : BaseRepository<Department>(db)
+public class DepartmentRepository(PersonManagerContext db) : LookupRepository<Department>(db)
 {
     public override IQueryable<Department> Search()
     {

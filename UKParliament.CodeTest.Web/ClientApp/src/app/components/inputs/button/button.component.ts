@@ -17,6 +17,9 @@ export class ButtonComponent {
   @Input()
   clickFunction?: Function;
 
+  @Input()
+  ariaLabel = "";
+
   @Output()
   click = new EventEmitter<void>();
 

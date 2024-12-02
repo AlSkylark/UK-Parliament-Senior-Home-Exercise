@@ -11,7 +11,12 @@
           [placeholder]="'Type here to search by first name or last name...'"
         ></app-textbox>
 
-        <app-button class="search-button" type="button" (click)="search()">
+        <app-button
+          class="search-button"
+          type="button"
+          (click)="search()"
+          [ariaLabel]="editorIsOpen ? 'Search' : ''"
+        >
           <i class="bx bx-search"></i>
           <span class="search-button-text">Search</span></app-button
         >

@@ -119,6 +119,7 @@ $field-gaps: 1rem;
     }
 
     .bottom-section {
+      margin-top: $field-gaps;
       align-self: center;
       .submit {
         display: flex;

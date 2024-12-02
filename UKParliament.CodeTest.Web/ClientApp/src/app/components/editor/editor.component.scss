@@ -1,9 +1,21 @@
 @use "tokens" as t;
 @use "colours" as c;
 
+@import "bs-breakpoints";
+
 $field-gaps: 1rem;
+
+@include media-breakpoint-up(md) {
+  .cointainer {
+    padding: 2rem;
+    .top-section {
+      justify-content: space-between;
+    }
+  }
+}
+
 .container {
-  padding: 2rem;
+  padding: 10px;
 
   button {
     @include t.button-style;
@@ -18,7 +30,10 @@ $field-gaps: 1rem;
 
   .top-section {
     display: flex;
-    justify-content: space-between;
+    flex-wrap: wrap-reverse;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
 
     .action-buttons {
       display: flex;
@@ -67,7 +82,6 @@ $field-gaps: 1rem;
 
     .postcode-combi {
       display: flex;
-      flex-wrap: wrap;
       gap: $field-gaps;
 
       .postcode-el {
@@ -76,6 +90,7 @@ $field-gaps: 1rem;
       }
       .county-el {
         flex: 1;
+        min-width: 150px;
       }
     }
 
@@ -91,7 +106,6 @@ $field-gaps: 1rem;
 
     .payment-section {
       display: flex;
-      flex-wrap: wrap;
       gap: $field-gaps;
 
       .payband-el {
@@ -100,6 +114,7 @@ $field-gaps: 1rem;
       }
       .salary-el {
         flex: 1;
+        min-width: 150px;
       }
     }
 

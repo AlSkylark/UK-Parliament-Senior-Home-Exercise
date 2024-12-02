@@ -10,12 +10,10 @@
   .wrapper {
     &.editor-open {
       display: grid;
-      grid-template-columns: 400px 1fr;
-      grid-auto-flow: column;
-
+      grid-template-columns: 1fr;
+      grid-auto-flow: row;
       .editor {
-        height: 100%;
-        border-left: t.$limiter-border-style;
+        border-top: t.$limiter-border-style;
       }
     }
 
@@ -34,6 +32,17 @@
         margin: 0;
         flex: 1;
         padding-bottom: 1rem;
+      }
+    }
+
+    @include media-breakpoint-up(lg) {
+      &.editor-open {
+        grid-template-columns: 400px 1fr;
+        grid-auto-flow: column;
+        .editor {
+          height: 100%;
+          border-left: t.$limiter-border-style;
+        }
       }
     }
 

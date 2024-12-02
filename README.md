@@ -1,19 +1,11 @@
-# UK Parliament - Product Team Home Exercise for Senior Developer
+#    Welcome to the Parliament's brand new HR Management System
+---
+## It's a little limited but it's got potential
 
-## Dependencies
-Please ensure you have the following installed:
-* .NET 8 SDK (you may need to ensure your Visual Studio installation is fully up to date)
-* Node v20.16.0 LTS
+And here we are again, like the last time, I tried to show a little bit of everything. It is currently 5:27am so the final touches might be... Questionable. Just don't look at the css, trust me it's fine! 
 
-## Introduction
+Jokes aside, as much as I'd LOVE to finish all the features that were in my head, my limited time, disastrous refactors and two full days in a row of coding can only do so much...
 
-Thanks for doing our recruitment home exercise. We have written a template solution for you, to save you from having to do too much setup.
+STILL! I am quite proud of this little guy right here, maybe not quite a looker as my past attempt (I mean, I did create this one mostly from scratch whereas the other time I had everything already designed... Goes to show the importance of designers and UX engineers!) but it still has some neat features including a solid foundation for a RESTful API with a robust linking system that "self-documents" itself.
 
-* Clone this repository, and open the solution
-* Set **UKParliament.CodeTest.Web** as the startup project
-* Build and run it (NPM should install all the dependencies automatically)
-* Instructions have been provided for you within the solution and these will display on the home page. The home page also shows the assessment criteria for the test. **You should aim to satisfy all points on it.**
-
-## Submitting your test
-* After you have complete this test please host your solution on GitHub (or another git based hosting platform)
-* Provide us with a link so we can clone your solution
+Once again, I do hope it runs on your machine!

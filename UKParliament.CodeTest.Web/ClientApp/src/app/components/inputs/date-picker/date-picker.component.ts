@@ -1,21 +1,22 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BaseComponent } from '../base-input.component';
 import { CommonModule } from '@angular/common';
 import { ErrorService } from 'src/app/services/error.service';
 
 @Component({
-  selector: 'app-textbox',
+  selector: 'app-date-picker',
   standalone: true,
   imports: [FormsModule, CommonModule],
-  templateUrl: './textbox.component.html',
-  styleUrl: './textbox.component.scss'
+  templateUrl: './date-picker.component.html',
+  styleUrl: './date-picker.component.scss'
 })
-export class TextboxComponent extends BaseComponent<string> {
+export class DatePickerComponent extends BaseComponent<string> {
 
   onInput(event: Event): void {
     const inputValue = (event.target as HTMLInputElement).value;
-    this.valueChange.emit(inputValue);
+    const date = new Date(inputValue);
+    this.valueChange.emit(date.toISOString());
     this.errorService.resetErrors();
   }
 }

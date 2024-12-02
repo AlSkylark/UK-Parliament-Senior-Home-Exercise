@@ -2,7 +2,11 @@
   @if (loading) {
     <i class="bx bx-loader-circle bx-spin spinner"></i>
   }
+  @if (showLabel) {
+    <label for="{{ id }}">{{ label }}</label>
+  }
   <select
+    [ngClass]="{ 'has-errors': !isValid }"
     name="{{ id }}"
     id="{{ id }}"
     [attr.aria-label]="text"
@@ -10,6 +14,7 @@
     (click)="getLookupItems()"
     [(ngModel)]="value"
     (change)="updateValue()"
+    [disabled]="disabled"
   >
     <option value="">{{ text }}</option>
 
@@ -17,4 +22,10 @@
       <option [value]="item.name">{{ item.name }}</option>
     }
   </select>
+
+  <div class="validation-messages">
+    @for (message of validationMessages; track $index) {
+      <div class="validation-message">{{ message }}</div>
+    }
+  </div>
 </div>

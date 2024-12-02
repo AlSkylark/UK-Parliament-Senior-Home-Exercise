@@ -70,7 +70,7 @@ irregular (has no manager, pay, etc.)
       }
     }
     .department {
-      color: c.$colour-grey-2;
+      color: c.$colour-grey-1;
     }
   }
 
@@ -112,10 +112,10 @@ irregular (has no manager, pay, etc.)
 
     &.inactive {
       display: block;
-      background-color: c.$colour-grey-3;
+      background-color: c.$colour-inactive-light;
 
       i {
-        color: c.$colour-grey-2;
+        color: c.$colour-inactive-dark;
       }
     }
 
@@ -127,6 +127,10 @@ irregular (has no manager, pay, etc.)
         color: c.$colour-warning-dark;
       }
     }
+  }
+
+  &.selected {
+    @include t.focus-style;
   }
 
   @include media-breakpoint-up(sm) {

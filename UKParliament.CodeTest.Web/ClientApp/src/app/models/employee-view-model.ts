@@ -6,14 +6,14 @@ export interface EmployeeViewModel extends BaseViewModel {
   firstName: string;
   lastName: string;
   employeeType: string;
-  doB: Date,
+  doB: string,
   payBand: string,
   department: string,
   salary: number,
   bankAccount: string,
 
-  dateJoined: Date,
-  dateLeft: Date,
+  dateJoined: string,
+  dateLeft: string,
 
   manager: ShortManagerViewModel,
 

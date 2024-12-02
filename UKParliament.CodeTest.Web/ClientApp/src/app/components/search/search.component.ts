@@ -6,11 +6,12 @@ import { LookupItemsEnum } from 'src/app/models/lookup-items-enum';
 import { SearchRequest } from 'src/app/models/search-request';
 import { FilterService } from 'src/app/services/filter.service';
 import { EmployeeService } from 'src/app/services/employee.service';
+import { ButtonComponent } from "../inputs/button/button.component";
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [TextboxComponent, FilterSelectComponent, CommonModule],
+  imports: [TextboxComponent, FilterSelectComponent, CommonModule, ButtonComponent],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss'
 })

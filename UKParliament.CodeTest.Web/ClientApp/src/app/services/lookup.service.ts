@@ -72,7 +72,8 @@ export class LookupService {
   }
 
   public getLookupItems(item: LookupItemsEnum, forceRefresh = false) {
-    if (this.getLookupItem(item).length === 0 || forceRefresh) {
+    const loadedItem = this.getLookupItem(item);
+    if (loadedItem.length === 0 || forceRefresh) {
       this.http.get<LookupItem[]>(this.baseUrl + `api/lookup/search?item=${item.toString()}`).subscribe(e => {
         this.populateLookupItem(item, e);
       });
@@ -80,6 +81,7 @@ export class LookupService {
       return true;
     }
 
+    this.populateLookupItem(item, loadedItem);
     return false;
   }
 }

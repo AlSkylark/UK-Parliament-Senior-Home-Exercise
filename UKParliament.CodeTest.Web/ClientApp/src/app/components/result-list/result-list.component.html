@@ -13,7 +13,12 @@
     </div>
     <div class="content" [ngClass]="{ 'editor-open': editorIsOpen }">
       @for (item of employeeCollection?.results; track $index) {
-        <app-card [employee]="item"></app-card>
+        <app-card
+          [employee]="item"
+          [selected]="
+            !!(selectedEmployee && selectedEmployee.data.id === item.data.id)
+          "
+        ></app-card>
       }
     </div>
     <div class="pagination">

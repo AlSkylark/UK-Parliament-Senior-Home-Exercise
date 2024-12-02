@@ -3,17 +3,21 @@ import { Component, Input } from '@angular/core';
 import { EmployeeViewModel } from 'src/app/models/employee-view-model';
 import { Resource } from 'src/app/models/resource';
 import { EmployeeService } from 'src/app/services/employee.service';
+import { ButtonComponent } from "../inputs/button/button.component";
 
 @Component({
   selector: 'app-card',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ButtonComponent],
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss'
 })
 export class CardComponent {
   @Input({ required: true })
   employee!: Resource<EmployeeViewModel>;
+
+  @Input()
+  selected = false;
 
   editorIsOpen = false;
   constructor(private employeeService: EmployeeService) {

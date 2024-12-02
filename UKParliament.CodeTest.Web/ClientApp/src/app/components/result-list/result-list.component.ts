@@ -18,10 +18,14 @@ export class ResultListComponent {
 
   editorIsOpen = false;
   employeeCollection: ResourceCollection<Resource<EmployeeViewModel>> | undefined;
+  selectedEmployee: Resource<EmployeeViewModel> | null = null;
 
   constructor(private employeeService: EmployeeService) {
     this.employeeService.employeeListSubject.subscribe(collection => this.employeeCollection = collection);
-    this.employeeService.employeeSubject.subscribe(e => this.editorIsOpen = !!e);
+    this.employeeService.employeeSubject.subscribe(e => {
+      this.selectedEmployee = e;
+      this.editorIsOpen = !!e
+    });
   }
 
 }

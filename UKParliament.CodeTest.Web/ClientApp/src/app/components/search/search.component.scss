@@ -4,6 +4,7 @@
 
 .container {
   width: 100%;
+
   form {
     display: flex;
     flex-direction: column;
@@ -23,10 +24,8 @@
         grid-auto-flow: column;
         grid-template-columns: 1fr auto;
         width: auto;
-        .search-button {
-          @include t.button-style;
-          border-left: none;
 
+        .search-button {
           .search-button-text {
             display: none;
           }

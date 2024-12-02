@@ -30,6 +30,10 @@ public class EmployeeCreateValidator : AbstractValidator<EmployeeViewModel>
                 }
             )
             .When(vm => vm.PayBand is not null)
-            .WithMessage("Salary must be between PayBand min and max pay");
+            .WithMessage(vm =>
+            {
+                var payBand = lookUpService.SearchPayBands(vm.PayBand).FirstOrDefault();
+                return $"Salary must be between PayBand minimum pay ({payBand!.MinPay.ToString("C")}) and maximum pay ({payBand!.MaxPay.ToString("C")})";
+            });
     }
 }

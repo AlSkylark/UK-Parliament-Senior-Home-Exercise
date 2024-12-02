@@ -1,16 +1,18 @@
 <div class="container">
   <div class="prev">
-    <button
+    <app-button
       type="button"
       [disabled]="pagination?.currentPage === 1"
       (click)="goPrev()"
     >
       <i class="bx bxs-left-arrow"></i>
       Previous
-    </button>
+    </app-button>
   </div>
+
   <div class="selector">
     <select
+      aria-label="Page selector"
       name="page-selector"
       id="page-selector"
       [(ngModel)]="currentFilters.page"
@@ -21,14 +23,15 @@
       }
     </select>
   </div>
+
   <div class="next">
-    <button
+    <app-button
       type="button"
       [disabled]="pagination?.currentPage === pagination?.finalPage"
       (click)="goNext()"
     >
       Next
       <i class="bx bxs-right-arrow"></i>
-    </button>
+    </app-button>
   </div>
 </div>

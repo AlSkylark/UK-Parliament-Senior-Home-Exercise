@@ -66,3 +66,16 @@ a {
     @include t.focus-style(true);
   }
 }
+
+.validation-messages {
+  color: c.$colour-error-dark;
+
+  .validation-message {
+    &:first-child {
+      margin-top: 10px;
+    }
+    &::before {
+      content: "* ";
+    }
+  }
+}

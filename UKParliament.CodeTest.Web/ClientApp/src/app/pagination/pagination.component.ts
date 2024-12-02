@@ -4,11 +4,12 @@ import { EmployeeService } from '../services/employee.service';
 import { FilterService } from '../services/filter.service';
 import { SearchRequest } from '../models/search-request';
 import { FormsModule } from '@angular/forms';
+import { ButtonComponent } from "../components/inputs/button/button.component";
 
 @Component({
   selector: 'app-pagination',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, ButtonComponent],
   templateUrl: './pagination.component.html',
   styleUrl: './pagination.component.scss'
 })

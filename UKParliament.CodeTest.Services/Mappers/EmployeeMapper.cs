@@ -32,6 +32,8 @@ public class EmployeeMapper(
             DateJoined = person.DateJoined,
             DateLeft = person.DateLeft,
 
+            ManagerId = person.ManagerId,
+
             Inactive = person.DateLeft is not null,
             HasManager = person.ManagerId > 0,
             IsManager = person.EmployeeType == EmployeeTypeEnum.Manager,
@@ -40,7 +42,6 @@ public class EmployeeMapper(
 
         if (person.Manager is not null)
         {
-            vm.ManagerId = person.ManagerId;
             vm.Manager = MapManager(person.Manager);
         }
 
@@ -76,6 +77,8 @@ public class EmployeeMapper(
             PayBand = payBand.FirstOrDefault() ?? existing.PayBand,
             Department = department.FirstOrDefault() ?? existing.Department,
             ManagerId = vm.ManagerId ?? existing.ManagerId,
+
+            CreatedAt = existing.CreatedAt,
         };
 
         return employee;

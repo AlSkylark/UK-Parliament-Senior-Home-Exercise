@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" [ngClass]="{ selected: selected }">
   <div class="avatar">
     <div class="outer-border" [ngClass]="{ manager: employee.data.isManager }">
       <div class="inner-border">
@@ -33,7 +33,9 @@
     </div>
   </div>
   <div class="profile">
-    <button type="button" (click)="openEmployeeProfile()">View profile</button>
+    <app-button (click)="openEmployeeProfile()" type="button">
+      View profile
+    </app-button>
   </div>
   <div
     class="status"

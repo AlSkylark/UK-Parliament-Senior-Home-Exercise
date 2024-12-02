@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-button',
@@ -10,4 +10,17 @@ import { Component, Input } from '@angular/core';
 export class ButtonComponent {
   @Input({ required: true })
   type: "button" | "menu" | "submit" | "reset" = 'button';
+
+  @Input()
+  disabled = false;
+
+  @Input()
+  clickFunction?: Function;
+
+  @Output()
+  click = new EventEmitter<void>();
+
+  activateButton() {
+    this.click.next()
+  }
 }

@@ -23,6 +23,7 @@ export class FilterService {
     this.currentFilters.employeeType = employeeType;
     this.currentFilters.payBand = payBand;
     this.currentFilters.textSearch = textSearch;
+    this.resetPagination();
 
     this.filtersSubject.next(this.currentFilters);
   }

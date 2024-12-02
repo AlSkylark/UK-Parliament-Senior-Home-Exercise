@@ -1,11 +1,15 @@
 @use "tokens" as t;
 
 .container {
-  display: flex;
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
   gap: 1rem;
+  padding: 0 1.5rem;
 
   .selector {
+    justify-self: center;
     select {
       @include t.input-style;
     }
